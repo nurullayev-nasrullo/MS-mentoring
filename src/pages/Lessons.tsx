@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Search, Edit, Trash2, Play, FileText, Video, BookOpen, Clock } from 'lucide-react';
+import { Plus, Search, CreditCard as Edit, Trash2, Play, FileText, Video, BookOpen, Clock } from 'lucide-react';
 import { mockPrograms } from '../data/mockData';
 import { Lesson, CreateLessonData } from '../types';
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Search, Edit, Trash2, Eye, Users, UserCheck, Shield } from 'lucide-react';
+import { Plus, Search, CreditCard as Edit, Trash2, Eye, Users, UserCheck, Shield } from 'lucide-react';
 import { mockStudents, mockMentors } from '../../data/mockData';
 import { User, CreateStudentData, CreateMentorData } from '../../types';
 
@@ -64,7 +64,6 @@ const UserManagement: React.FC = () => {
       setShowCreateModal(false);
       setStudentData({ name: '', email: '', password: '' });
       setMentorData({ name: '', email: '', password: '', specialization: '', bio: '' });
-      alert(`${createUserType === 'student' ? 'Student' : 'Mentor'} created successfully!`);
     };
 
     return (

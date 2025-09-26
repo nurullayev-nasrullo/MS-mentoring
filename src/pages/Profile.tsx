@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Mail, Calendar, Trophy, Award, Edit, Save, X } from 'lucide-react';
+import { User, Mail, Calendar, Trophy, Award, CreditCard as Edit, Save, X } from 'lucide-react';
 import { authService } from '../utils/auth';
 
 const Profile: React.FC = () => {
