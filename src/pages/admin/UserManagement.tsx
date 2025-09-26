@@ -64,6 +64,7 @@ const UserManagement: React.FC = () => {
       setShowCreateModal(false);
       setStudentData({ name: '', email: '', password: '' });
       setMentorData({ name: '', email: '', password: '', specialization: '', bio: '' });
+      alert(`${createUserType === 'student' ? 'Student' : 'Mentor'} created successfully!`);
     };
 
     return (

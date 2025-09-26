@@ -20,12 +20,13 @@ export const authService = {
           
           const user: User = {
             id: '1',
-            name: 'Mirshod Shakirov',
+            name: email === SUPER_ADMIN_EMAIL ? 'Mirshod Shakirov' : 
+                  email.includes('mentor') ? 'John Mentor' : 'Jane Student',
             email: email,
             role: role,
             joinDate: '2024-01-15',
-            points: 1250,
-            level: 3,
+            points: role === 'super_admin' ? 5000 : role === 'mentor' ? 2500 : 1250,
+            level: role === 'super_admin' ? 5 : role === 'mentor' ? 4 : 3,
             badges: [
               {
                 id: '1',

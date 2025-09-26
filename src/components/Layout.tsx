@@ -27,7 +27,7 @@ const Layout: React.FC = () => {
 
   const handleLogout = () => {
     authService.logout();
-    window.location.href = '/login';
+    window.location.reload();
   };
 
   const studentNavigation = [
