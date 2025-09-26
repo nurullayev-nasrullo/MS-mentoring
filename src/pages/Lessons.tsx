@@ -161,6 +161,7 @@ const Lessons: React.FC = () => {
           : lesson
       ));
       setEditingLesson(null);
+      alert('Lesson updated successfully!');
     } else {
       // Create new lesson
       const newLesson = {
@@ -174,6 +175,7 @@ const Lessons: React.FC = () => {
       };
       setAllLessons(prev => [...prev, newLesson]);
       setShowCreateModal(false);
+      alert('Lesson created successfully!');
     }
   };
 
