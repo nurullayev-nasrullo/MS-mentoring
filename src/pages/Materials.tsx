@@ -39,6 +39,27 @@ const Materials: React.FC = () => {
     }
   };
 
+  const handleDownload = (material: typeof mockMaterials[0]) => {
+    // Simulate download
+    const updatedMaterials = mockMaterials.map(m => 
+      m.id === material.id ? { ...m, downloads: m.downloads + 1 } : m
+    );
+    
+    // In a real app, this would trigger an actual download
+    if (material.fileUrl) {
+      // Create a temporary link to simulate download
+      const link = document.createElement('a');
+      link.href = material.fileUrl;
+      link.download = material.title;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    
+    // Show success message
+    alert(`Downloaded: ${material.title}`);
+  };
+
   return (
     <div className="p-6">
       <div className="mb-8">
@@ -125,7 +146,10 @@ const Materials: React.FC = () => {
                   <button className="p-2 text-gray-400 hover:text-yellow-500 transition-colors">
                     <Star className="h-4 w-4" />
                   </button>
-                  <button className="px-4 py-2 bg-gradient-to-r from-blue-600 to-teal-600 text-white rounded-lg hover:from-blue-700 hover:to-teal-700 transition-all text-sm font-medium">
+                  <button 
+                    onClick={() => handleDownload(material)}
+                    className="px-4 py-2 bg-gradient-to-r from-blue-600 to-teal-600 text-white rounded-lg hover:from-blue-700 hover:to-teal-700 transition-all text-sm font-medium"
+                  >
                     Download
                   </button>
                 </div>

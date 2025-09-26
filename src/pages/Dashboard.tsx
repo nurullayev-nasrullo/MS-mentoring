@@ -5,8 +5,16 @@ import { mockPrograms, mockNotifications } from '../data/mockData';
 
 const Dashboard: React.FC = () => {
   const user = authService.getCurrentUser()!;
-  const activePrograms = mockPrograms.filter(p => p.status === 'active');
+  const [programs] = useState(mockPrograms);
+  const activePrograms = programs.filter(p => p.status === 'active');
   const recentNotifications = mockNotifications.slice(0, 3);
+
+  const totalLessonsCompleted = programs.reduce((total, program) => 
+    total + program.lessons.filter(lesson => lesson.completed).length, 0
+  );
+  
+  const totalLessons = programs.reduce((total, program) => total + program.lessons.length, 0);
+  const overallCompletionRate = totalLessons > 0 ? Math.round((totalLessonsCompleted / totalLessons) * 100) : 0;
 
   const stats = [
     {
@@ -25,7 +33,7 @@ const Dashboard: React.FC = () => {
     },
     {
       name: 'Completion Rate',
-      value: '87%',
+      value: `${overallCompletionRate}%`,
       icon: TrendingUp,
       color: 'bg-purple-500',
       change: '+5%'
@@ -111,7 +119,7 @@ const Dashboard: React.FC = () => {
                       </div>
                     </div>
                     <button className="px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                      Continue
+                      {program.progress === 100 ? 'Review' : 'Continue'}
                     </button>
                   </div>
                 </div>

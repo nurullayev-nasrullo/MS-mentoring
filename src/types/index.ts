@@ -55,6 +55,7 @@ export interface Material {
   author: string;
   uploadDate: string;
   downloads: number;
+  fileUrl?: string;
 }
 
 export interface Notification {

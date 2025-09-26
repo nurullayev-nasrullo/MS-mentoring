@@ -11,7 +11,10 @@ const Profile: React.FC = () => {
   });
 
   const handleSave = () => {
-    // In a real app, this would update the user data
+    // Simulate updating user data
+    const updatedUser = { ...user, ...formData };
+    localStorage.setItem('mentoring_platform_user', JSON.stringify(updatedUser));
+    alert('Profile updated successfully!');
     setIsEditing(false);
   };
 

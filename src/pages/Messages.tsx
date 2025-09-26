@@ -15,8 +15,8 @@ const Messages: React.FC = () => {
   const filteredMessages = messages.filter(message => {
     const matchesSearch = message.content.toLowerCase().includes(searchTerm.toLowerCase());
     const isRelevant = user.role === 'mentor' 
-      ? message.senderId === user.id 
-      : message.receiverId === user.id;
+      ? message.senderId === user.id || message.receiverId === user.id
+      : message.senderId === user.id || message.receiverId === user.id;
     return matchesSearch && isRelevant;
   });
 
@@ -189,7 +189,7 @@ const Messages: React.FC = () => {
                             </span>
                             {user.role === 'mentor' && (
                               <span className="text-sm text-gray-600">
-                                To: {getStudentName(message.receiverId)}
+                                {message.senderId === user.id ? `To: ${getStudentName(message.receiverId)}` : `From: ${getStudentName(message.senderId)}`}
                               </span>
                             )}
                           </div>

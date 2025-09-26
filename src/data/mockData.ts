@@ -1,8 +1,6 @@
-import { Program, Material, Notification } from '../types';
+import { Program, Material, Notification, PlatformStats, Message, Student } from '../types';
 
-import { Program, Material, Notification, PlatformStats, Message } from '../types';
-
-export const mockStudents = [
+export const mockStudents: Student[] = [
   {
     id: '2',
     name: 'Alex Johnson',
@@ -130,6 +128,24 @@ export const mockMessages: Message[] = [
     timestamp: '2024-02-14T15:45:00Z',
     read: true,
     type: 'note'
+  },
+  {
+    id: '3',
+    senderId: '1',
+    receiverId: '3',
+    content: 'Excellent work on the marketing strategy assignment!',
+    timestamp: '2024-02-13T16:20:00Z',
+    read: true,
+    type: 'message'
+  },
+  {
+    id: '4',
+    senderId: '1',
+    receiverId: '4',
+    content: 'Please review the financial planning materials before our next session.',
+    timestamp: '2024-02-12T11:15:00Z',
+    read: false,
+    type: 'note'
   }
 ];
 
@@ -240,7 +256,20 @@ export const mockPrograms: Program[] = [
     status: 'pending',
     startDate: '2024-03-01',
     endDate: '2024-03-29',
-    lessons: []
+    lessons: [
+      {
+        id: '6',
+        title: 'Financial Fundamentals',
+        description: 'Basic financial concepts for entrepreneurs',
+        duration: '60 min',
+        completed: false,
+        type: 'video',
+        content: 'Learn the essential financial concepts every entrepreneur needs to know...',
+        videoUrl: 'https://example.com/video4',
+        createdAt: '2024-02-01T10:00:00Z',
+        updatedAt: '2024-02-01T10:00:00Z'
+      }
+    ]
   }
 ];
 
@@ -253,7 +282,8 @@ export const mockMaterials: Material[] = [
     category: 'Planning',
     author: 'Platform Team',
     uploadDate: '2024-01-15',
-    downloads: 247
+    downloads: 247,
+    fileUrl: 'https://example.com/business-plan-template.pdf'
   },
   {
     id: '2',
@@ -263,7 +293,8 @@ export const mockMaterials: Material[] = [
     category: 'Research',
     author: 'Sarah Johnson',
     uploadDate: '2024-01-20',
-    downloads: 156
+    downloads: 156,
+    fileUrl: 'https://example.com/market-research-guide.pdf'
   },
   {
     id: '3',
@@ -273,7 +304,8 @@ export const mockMaterials: Material[] = [
     category: 'Pitching',
     author: 'Michael Chen',
     uploadDate: '2024-02-01',
-    downloads: 89
+    downloads: 89,
+    fileUrl: 'https://example.com/pitch-deck-video.mp4'
   },
   {
     id: '4',
@@ -283,7 +315,30 @@ export const mockMaterials: Material[] = [
     category: 'Finance',
     author: 'Emily Rodriguez',
     uploadDate: '2024-02-10',
-    downloads: 134
+    downloads: 134,
+    fileUrl: 'https://example.com/financial-projections.xlsx'
+  },
+  {
+    id: '5',
+    title: 'Customer Interview Script',
+    description: 'Template for conducting effective customer interviews',
+    type: 'template',
+    category: 'Research',
+    author: 'Sarah Johnson',
+    uploadDate: '2024-02-05',
+    downloads: 98,
+    fileUrl: 'https://example.com/customer-interview-script.pdf'
+  },
+  {
+    id: '6',
+    title: 'Social Media Calendar Template',
+    description: 'Monthly planning template for social media content',
+    type: 'template',
+    category: 'Marketing',
+    author: 'Michael Chen',
+    uploadDate: '2024-02-12',
+    downloads: 76,
+    fileUrl: 'https://example.com/social-media-calendar.xlsx'
   }
 ];
 
@@ -319,5 +374,21 @@ export const mockNotifications: Notification[] = [
     type: 'success',
     read: true,
     timestamp: '2024-02-10T16:20:00Z'
+  },
+  {
+    id: '5',
+    title: 'New Material Available',
+    message: 'A new financial planning template has been added to your resources.',
+    type: 'info',
+    read: false,
+    timestamp: '2024-02-12T11:30:00Z'
+  },
+  {
+    id: '6',
+    title: 'Weekly Progress Report',
+    message: 'You\'ve completed 3 lessons this week. Keep up the great work!',
+    type: 'success',
+    read: true,
+    timestamp: '2024-02-11T18:00:00Z'
   }
 ];
