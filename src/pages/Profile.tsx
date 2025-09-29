@@ -3,7 +3,7 @@ import { User, Mail, Calendar, Trophy, Award, CreditCard as Edit, Save, X } from
 import { authService } from '../utils/auth';
 
 const Profile: React.FC = () => {
-  const user = authService.getCurrentUser()!;
+  const [user, setUser] = useState(authService.getCurrentUser()!);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: user.name,
@@ -11,10 +11,25 @@ const Profile: React.FC = () => {
   });
 
   const handleSave = () => {
-    // Simulate updating user data
+    // Update user data
     const updatedUser = { ...user, ...formData };
+    
+    // Save to localStorage
     localStorage.setItem('mentoring_platform_user', JSON.stringify(updatedUser));
-    alert('Profile updated successfully!');
+    
+    // Update local state
+    setUser(updatedUser);
+    setIsEditing(false);
+    
+    // Show success message
+    alert('✅ Profile updated successfully!');
+  };
+
+  const handleCancel = () => {
+    setFormData({
+      name: user.name,
+      email: user.email
+    });
     setIsEditing(false);
   };
 
@@ -54,7 +69,7 @@ const Profile: React.FC = () => {
                     Save
                   </button>
                   <button
-                    onClick={() => setIsEditing(false)}
+                    onClick={handleCancel}
                     className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
                   >
                     <X className="h-4 w-4 mr-2" />

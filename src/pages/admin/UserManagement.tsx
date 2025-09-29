@@ -38,6 +38,11 @@ const UserManagement: React.FC = () => {
       e.preventDefault();
       
       if (createUserType === 'student') {
+        if (!studentData.name || !studentData.email || !studentData.password) {
+          alert('Please fill in all fields');
+          return;
+        }
+        
         const newStudent: User = {
           id: Date.now().toString(),
           ...studentData,
@@ -48,7 +53,13 @@ const UserManagement: React.FC = () => {
           badges: []
         };
         setAllUsers([...allUsers, newStudent]);
+        alert(`✅ Student created: ${studentData.name}`);
       } else {
+        if (!mentorData.name || !mentorData.email || !mentorData.password || !mentorData.specialization || !mentorData.bio) {
+          alert('Please fill in all fields');
+          return;
+        }
+        
         const newMentor: User = {
           id: Date.now().toString(),
           ...mentorData,
@@ -59,6 +70,7 @@ const UserManagement: React.FC = () => {
           badges: []
         };
         setAllUsers([...allUsers, newMentor]);
+        alert(`✅ Mentor created: ${mentorData.name}`);
       }
       
       setShowCreateModal(false);
@@ -211,7 +223,7 @@ const UserManagement: React.FC = () => {
             <h3 className="text-xl font-semibold text-gray-900">User Details</h3>
             <button
               onClick={() => setShowUserModal(false)}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-gray-400 hover:text-gray-600 text-2xl"
             >
               ×
             </button>
@@ -279,8 +291,10 @@ const UserManagement: React.FC = () => {
   };
 
   const deleteUser = (userId: string) => {
-    if (confirm('Are you sure you want to delete this user?')) {
+    const user = allUsers.find(u => u.id === userId);
+    if (confirm(`Are you sure you want to delete ${user?.name}?`)) {
       setAllUsers(allUsers.filter(u => u.id !== userId));
+      alert(`✅ User deleted: ${user?.name}`);
     }
   };
 

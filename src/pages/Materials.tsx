@@ -6,11 +6,12 @@ const Materials: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedType, setSelectedType] = useState<string>('all');
+  const [materials, setMaterials] = useState(mockMaterials);
 
-  const categories = Array.from(new Set(mockMaterials.map(m => m.category)));
-  const types = Array.from(new Set(mockMaterials.map(m => m.type)));
+  const categories = Array.from(new Set(materials.map(m => m.category)));
+  const types = Array.from(new Set(materials.map(m => m.type)));
 
-  const filteredMaterials = mockMaterials.filter(material => {
+  const filteredMaterials = materials.filter(material => {
     const matchesSearch = material.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          material.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || material.category === selectedCategory;
@@ -39,25 +40,22 @@ const Materials: React.FC = () => {
     }
   };
 
-  const handleDownload = (material: typeof mockMaterials[0]) => {
-    // Simulate download
-    const updatedMaterials = mockMaterials.map(m => 
-      m.id === material.id ? { ...m, downloads: m.downloads + 1 } : m
-    );
+  const handleDownload = (materialId: string) => {
+    // Update download count
+    setMaterials(prev => prev.map(material => 
+      material.id === materialId 
+        ? { ...material, downloads: material.downloads + 1 }
+        : material
+    ));
+
+    // Get material info
+    const material = materials.find(m => m.id === materialId);
     
-    // In a real app, this would trigger an actual download
-    if (material.fileUrl) {
-      // Create a temporary link to simulate download
-      const link = document.createElement('a');
-      link.href = material.fileUrl;
-      link.download = material.title;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+    // Simulate download with success message
+    alert(`✅ Downloaded: ${material?.title}\n\nFile would be downloaded in a real application.`);
     
-    // Show success message
-    alert(`Downloaded: ${material.title}`);
+    // In a real app, you would trigger actual file download here
+    console.log(`Downloading material: ${material?.title} from ${material?.fileUrl}`);
   };
 
   return (
@@ -147,7 +145,7 @@ const Materials: React.FC = () => {
                     <Star className="h-4 w-4" />
                   </button>
                   <button 
-                    onClick={() => handleDownload(material)}
+                    onClick={() => handleDownload(material.id)}
                     className="px-4 py-2 bg-gradient-to-r from-blue-600 to-teal-600 text-white rounded-lg hover:from-blue-700 hover:to-teal-700 transition-all text-sm font-medium"
                   >
                     Download

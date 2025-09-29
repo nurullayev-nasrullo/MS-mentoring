@@ -20,13 +20,13 @@ const Programs: React.FC = () => {
   ];
 
   const handleContinueProgram = (programId: string) => {
-    // Find the next incomplete lesson
     const program = programs.find(p => p.id === programId);
     if (program) {
       const nextLesson = program.lessons.find(l => !l.completed);
       if (nextLesson) {
-        alert(`Starting lesson: ${nextLesson.title}`);
-        // In a real app, this would navigate to the lesson page
+        // Mark the next lesson as completed
+        handleCompleteLesson(programId, nextLesson.id);
+        alert(`Started and completed lesson: ${nextLesson.title}`);
       } else {
         alert('All lessons completed!');
       }
@@ -42,15 +42,28 @@ const Programs: React.FC = () => {
         const completedCount = updatedLessons.filter(l => l.completed).length;
         const newProgress = Math.round((completedCount / updatedLessons.length) * 100);
         
-        return {
+        const updatedProgram = {
           ...program,
           lessons: updatedLessons,
           progress: newProgress,
           status: newProgress === 100 ? 'completed' as const : program.status
         };
+
+        // Update selected program if it's the same one
+        if (selectedProgram && selectedProgram.id === programId) {
+          setSelectedProgram(updatedProgram);
+        }
+
+        return updatedProgram;
       }
       return program;
     }));
+
+    // Show success message
+    const lesson = programs.find(p => p.id === programId)?.lessons.find(l => l.id === lessonId);
+    if (lesson) {
+      alert(`✅ Lesson completed: ${lesson.title}`);
+    }
   };
 
   const getStatusColor = (status: string) => {
@@ -147,7 +160,10 @@ const Programs: React.FC = () => {
                 
                 {program.status === 'active' && (
                   <button 
-                    onClick={() => handleContinueProgram(program.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleContinueProgram(program.id);
+                    }}
                     className="flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-teal-600 text-white rounded-lg hover:from-blue-700 hover:to-teal-700 transition-all"
                   >
                     <Play className="h-4 w-4 mr-2" />
@@ -199,12 +215,15 @@ const Programs: React.FC = () => {
                 <h4 className="font-medium text-gray-900 mb-3">Lessons ({selectedProgram.lessons.length})</h4>
                 <div className="space-y-2">
                   {selectedProgram.lessons.map((lesson, index) => (
-                    <div key={lesson.id} className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer"
-                         onClick={() => !lesson.completed && handleCompleteLesson(selectedProgram.id, lesson.id)}>
+                    <div 
+                      key={lesson.id} 
+                      className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                      onClick={() => !lesson.completed && handleCompleteLesson(selectedProgram.id, lesson.id)}
+                    >
                       {lesson.completed ? (
                         <CheckCircle className="h-5 w-5 text-green-500" />
                       ) : (
-                        <div className="h-5 w-5 rounded-full border-2 border-gray-300 hover:border-blue-500" />
+                        <div className="h-5 w-5 rounded-full border-2 border-gray-300 hover:border-blue-500 transition-colors" />
                       )}
                       <div className="flex-1">
                         <p className={`text-sm font-medium ${lesson.completed ? 'text-gray-900' : 'text-gray-600'}`}>

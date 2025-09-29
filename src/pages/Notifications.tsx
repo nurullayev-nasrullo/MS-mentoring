@@ -17,14 +17,25 @@ const Notifications: React.FC = () => {
     setNotifications(prev => prev.map(notification =>
       notification.id === id ? { ...notification, read: true } : notification
     ));
+    
+    const notification = notifications.find(n => n.id === id);
+    if (notification) {
+      alert(`✅ Marked as read: ${notification.title}`);
+    }
   };
 
   const markAllAsRead = () => {
+    const unreadCount = notifications.filter(n => !n.read).length;
     setNotifications(prev => prev.map(notification => ({ ...notification, read: true })));
+    alert(`✅ Marked ${unreadCount} notifications as read`);
   };
 
   const deleteNotification = (id: string) => {
-    setNotifications(prev => prev.filter(notification => notification.id !== id));
+    const notification = notifications.find(n => n.id === id);
+    if (confirm(`Delete notification: "${notification?.title}"?`)) {
+      setNotifications(prev => prev.filter(notification => notification.id !== id));
+      alert('✅ Notification deleted');
+    }
   };
 
   const getIcon = (type: string) => {
@@ -64,7 +75,7 @@ const Notifications: React.FC = () => {
               onClick={markAllAsRead}
               className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors font-medium"
             >
-              Mark all as read
+              Mark all as read ({unreadCount})
             </button>
           )}
         </div>

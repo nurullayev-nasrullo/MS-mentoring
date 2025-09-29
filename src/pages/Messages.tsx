@@ -22,7 +22,10 @@ const Messages: React.FC = () => {
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!messageContent.trim() || !selectedStudent) return;
+    if (!messageContent.trim() || !selectedStudent) {
+      alert('Please select a student and enter a message');
+      return;
+    }
 
     const newMessage: Message = {
       id: Date.now().toString(),
@@ -36,6 +39,16 @@ const Messages: React.FC = () => {
 
     setMessages([newMessage, ...messages]);
     setMessageContent('');
+    
+    // Show success message
+    const studentName = getStudentName(selectedStudent);
+    alert(`✅ ${messageType === 'note' ? 'Note' : 'Message'} sent to ${studentName}!`);
+  };
+
+  const markAsRead = (messageId: string) => {
+    setMessages(prev => prev.map(message =>
+      message.id === messageId ? { ...message, read: true } : message
+    ));
   };
 
   const getStudentName = (studentId: string) => {
@@ -156,7 +169,7 @@ const Messages: React.FC = () => {
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-gray-900">
-                {user.role === 'mentor' ? 'Sent Messages' : 'Messages from Mentor'}
+                {user.role === 'mentor' ? 'Messages & Notes' : 'Messages from Mentor'}
               </h2>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -198,12 +211,20 @@ const Messages: React.FC = () => {
                           </span>
                         </div>
                         
-                        <p className="text-gray-900">{message.content}</p>
+                        <p className="text-gray-900 mb-2">{message.content}</p>
                         
                         {!message.read && user.role === 'student' && (
-                          <div className="mt-2">
-                            <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
-                            <span className="text-xs text-blue-600 ml-2">New</span>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                              <span className="text-xs text-blue-600">New</span>
+                            </div>
+                            <button
+                              onClick={() => markAsRead(message.id)}
+                              className="text-xs text-blue-600 hover:text-blue-800 underline"
+                            >
+                              Mark as read
+                            </button>
                           </div>
                         )}
                       </div>

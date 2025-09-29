@@ -34,6 +34,12 @@ const Lessons: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
+      
+      if (!formData.title || !formData.description || !formData.duration) {
+        alert('Please fill in all required fields');
+        return;
+      }
+      
       onSave(formData);
     };
 
@@ -161,7 +167,7 @@ const Lessons: React.FC = () => {
           : lesson
       ));
       setEditingLesson(null);
-      alert('Lesson updated successfully!');
+      alert(`✅ Lesson updated: ${data.title}`);
     } else {
       // Create new lesson
       const newLesson = {
@@ -175,13 +181,15 @@ const Lessons: React.FC = () => {
       };
       setAllLessons(prev => [...prev, newLesson]);
       setShowCreateModal(false);
-      alert('Lesson created successfully!');
+      alert(`✅ Lesson created: ${data.title}`);
     }
   };
 
   const deleteLesson = (lessonId: string) => {
-    if (confirm('Are you sure you want to delete this lesson?')) {
+    const lesson = allLessons.find(l => l.id === lessonId);
+    if (confirm(`Are you sure you want to delete "${lesson?.title}"?`)) {
       setAllLessons(prev => prev.filter(lesson => lesson.id !== lessonId));
+      alert(`✅ Lesson deleted: ${lesson?.title}`);
     }
   };
 

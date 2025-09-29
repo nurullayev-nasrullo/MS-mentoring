@@ -24,6 +24,12 @@ const Students: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
+      
+      if (!formData.name || !formData.email || !formData.password) {
+        alert('Please fill in all fields');
+        return;
+      }
+
       const newStudent: Student = {
         id: Date.now().toString(),
         ...formData,
@@ -38,9 +44,12 @@ const Students: React.FC = () => {
         totalLessonsCompleted: 0,
         averageProgress: 0
       };
+      
       setStudents([...students, newStudent]);
       setShowCreateModal(false);
       setFormData({ name: '', email: '', password: '' });
+      
+      alert(`✅ Student created successfully: ${newStudent.name}`);
     };
 
     return (
@@ -109,7 +118,7 @@ const Students: React.FC = () => {
             <h3 className="text-xl font-semibold text-gray-900">Student Details</h3>
             <button
               onClick={() => setShowStudentModal(false)}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-gray-400 hover:text-gray-600 text-2xl"
             >
               ×
             </button>
@@ -194,8 +203,10 @@ const Students: React.FC = () => {
   };
 
   const deleteStudent = (studentId: string) => {
-    if (confirm('Are you sure you want to remove this student?')) {
+    const student = students.find(s => s.id === studentId);
+    if (confirm(`Are you sure you want to remove ${student?.name}?`)) {
       setStudents(students.filter(s => s.id !== studentId));
+      alert(`✅ Student removed: ${student?.name}`);
     }
   };
 
